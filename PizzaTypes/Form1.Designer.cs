@@ -166,13 +166,14 @@ namespace PizzaTypes
             this.listBox1.ItemHeight = 15;
             this.listBox1.Items.AddRange(new object[] {
             "Cheese",
-            "Hawaiian",
-            "Margherita",
             "Neapolitan",
-            "Lahma Bi Afeen",
+            "Margherita",
             "Calzone",
             "Stromboli",
-            "Deep disk",
+            "Deep dish",
+            "Marinara",
+            "Hawaiian",
+            "Lahma Bi Afeen",
             "M&L Special"});
             this.listBox1.Location = new System.Drawing.Point(318, 32);
             this.listBox1.Name = "listBox1";

@@ -12,78 +12,124 @@ namespace PizzaTypes
 {
     public partial class Form1 : Form
     {
-        float pizzaPrice;
-        float totalPrice;
-        string selectedPizza;
+        private float totalPrice;
+        private string selectedPizza;
+        private string size;
+        private string toppings;
+
         public Form1()
         {
             InitializeComponent();
-            pizzaPrice = 0f;
             totalPrice = 0f;
+        }
+
+        public bool IsPizzaChecked()
+        {
+            return listBox1.SelectedIndex != -1;
         }
 
         private void PizzaSize_CheckedChanged(object sender, EventArgs e)
         {
-            
+            if (IsPizzaChecked())CalulatePizzaPrice();
         }
 
-        private void CalulatePizzaCost()
+        private void Toppings_CheckedChanged(object sender, EventArgs e)
         {
+            if (IsPizzaChecked()) CalulatePizzaPrice();
+        }
 
+        private void CalulatePizzaPrice()
+        {
+            totalPrice = GetPizza();
+            totalPrice += AddToppings();
+            ChooseSize();
+
+            txtTotal.Text = String.Format("{0:C}", totalPrice);
+
+            txtOrder.Text = selectedPizza + Environment.NewLine
+                + "Size: " + size + Environment.NewLine
+                + "Toppings: " + toppings;
+        }
+
+
+        public void ChooseSize()
+        {
+            if (rdoSmallSize.Checked)
+            {
+                totalPrice -= 2;
+                size = rdoSmallSize.Text;
+            }
+            else if (rdoLargeSize.Checked)
+            {
+                totalPrice += 5;
+                size = rdoMediumSize.Text;
+            }
+            else
+            {
+                size = rdoLargeSize.Text;
+            }
+        }
+
+        public float GetPizza()
+        {
             switch (selectedPizza)
             {
-                case "Cheese": 
-                    pizzaPrice = 10;
-                    break;
+                case "Cheese":
+                    return 10f;
                 case "Neapolitan":
-                    pizzaPrice = 10;
-                    break;
+                    return 10f;
                 case "Margherita":
-                    pizzaPrice = 10;
-                    break;
+                    return 10f;
                 case "Calzone":
-                    pizzaPrice = 12.5f;
-                    break;
+                    return 12.5f;
                 case "Stromboli":
-                    pizzaPrice = 12.5f;
-                    break;
+                    return 12.5f;
                 case "Deep dish":
-                    pizzaPrice = 12.5f;
-                    break;
+                    return 12.5f;
                 case "Marinara":
-                    pizzaPrice = 12.5f;
-                    break;
+                    return 12.5f;
                 case "Hawaiian":
-                    pizzaPrice = 12.5f;
-                    break;
+                    return 12.5f;
+                case "Lahma Bi Afeen":
+                    return 13f;
+                case "M&L Special":
+                    return 14f;
+                default:
+                    return 0;
             }
+        }
 
-            totalPrice = pizzaPrice;
+        public float AddToppings()
+        {
+            toppings = "";
+            float toppingPrice = 0;
             if (cbMushroom.Checked)
             {
-                totalPrice += 2;
+                toppingPrice += 2;
+                toppings += cbMushroom.Text.Remove(cbMushroom.Text.IndexOf("(")-1) + Environment.NewLine;
             }
             if (cbBlackOlive.Checked)
             {
-                totalPrice += 3;
+                toppingPrice += 3;
+                toppings += cbBlackOlive.Text.Remove(cbBlackOlive.Text.IndexOf("(") - 1) + Environment.NewLine;
             }
             if (cbPepperoni.Checked)
             {
-                totalPrice += 5;
+                toppingPrice += 5;
+                toppings += cbPepperoni.Text.Remove(cbPepperoni.Text.IndexOf("(") - 1) + Environment.NewLine;
             }
 
-                txtTotal.Text = String.Format("{0:C}", totalPrice);
-        }
-
-        private bool IsAtLeastOneSizeChecked()
-        {
-            return rdoSmallSize.Checked || rdoMediumSize.Checked || rdoLargeSize.Checked;
+            if (toppingPrice == 0)
+            {
+                toppings += "none";
+            }
+            return toppingPrice;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedPizza = listBox1.SelectedItem.ToString();
-            CalulatePizzaCost();
+            CalulatePizzaPrice();
         }
     }
 }
